@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function ContactForm(props) {
   const initialFieldValues = {
@@ -8,6 +8,17 @@ function ContactForm(props) {
     address: "",
   };
   const [values, setValues] = useState(initialFieldValues);
+  
+ 
+  useEffect(() => {
+    if (props.currentId === '')
+        setValues({ ...initialFieldValues })
+    else
+        setValues({
+            ...props.contacts[props.currentId]
+        })
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [props.currentId, props.contacts])
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -22,6 +33,7 @@ function ContactForm(props) {
      props.addOrEdit(values)
      setValues(initialFieldValues)
   }
+
 
   return (
     <form autoComplete="off" onSubmit={handleFormSubmit}>
@@ -87,7 +99,7 @@ function ContactForm(props) {
       <div className="form-group">
         <input
           type="submit"
-          value="Save"
+          value={props.currentId === "" ? "Save" : "Update"}
           className="btn btn-primary btn-block"
         />
       </div>
