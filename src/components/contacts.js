@@ -24,6 +24,18 @@ else
         })
     }
 
+    const handleDelete = id => {
+        if (window.confirm('Are you sure to delete this record?')) {
+            firebaseDb.child(`contacts/${id}`).remove(
+                err => {
+                    if (err)
+                        console.log(err)
+                    else
+                        setCurrentId('')
+                })
+        }
+    }
+
     const [contacts, setContacts] = useState({})
     const [currentId, setCurrentId] = useState('')
     useEffect(()=>{
@@ -70,8 +82,8 @@ else
                                     <a className='btn text-primary' onClick={()=>{setCurrentId(id)}}>
                                      <i className='fas fa-pencil-alt'></i>
                                     </a>
-                                    <a href='#' className='btn text-danger'>
-                                     <i className='fas fa-trash-alt'></i>
+                                    <a className='btn text-danger'>
+                                     <i className='fas fa-trash-alt' onClick={()=>handleDelete(id)}></i>
                                     </a>
                                 </td>
                             </tr>
